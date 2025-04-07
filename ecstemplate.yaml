@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: ECS Deployment with Fargate, Auto-Scaling, and Blue/Green Deployment using Parameter Store
+Description: ECS Deployment with Fargate, Auto-Scaling, and Blue/Green Deployment using  AWS Parameter Store
 
 Parameters:
   VPCId:
@@ -20,7 +20,7 @@ Parameters:
   ECRImageUri:
     Type: String
     Description: Full URI of the ECR image
-    Default: public.ecr.aws/k8g5g0y1/my-springboot-app:awsweek5project
+    Default: 867344428625.dkr.ecr.eu-central-1.amazonaws.com/my-springboot-app:awsweek5project-3521f9fe2c38b4943bf57db73a4ed263fc4dcac5
 
 Resources:
   # ECS Cluster
@@ -57,11 +57,11 @@ Resources:
                   - ssm:GetParameter
                 Resource:
                   - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/my-springboot-app/*"
-              # Allow KMS decryption (if parameters are encrypted)
+              
               - Effect: Allow
                 Action:
                   - kms:Decrypt
-                Resource: '*'  # Replace with specific KMS key ARN if known
+                Resource: '*'  
               # Allow S3 access for the bucket
               - Effect: Allow
                 Action:
@@ -107,11 +107,17 @@ Resources:
               ValueFrom: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/my-springboot-app/aws.access-key"
             - Name: aws.secret-key
               ValueFrom: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/my-springboot-app/aws.secret-key"
+            - Name: spring.datasource.url
+              ValueFrom: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/my-springboot-app/spring.datasource.url"
+            - Name: spring.datasource.username
+              ValueFrom: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/my-springboot-app/spring.datasource.username"
+            - Name: spring.datasource.password
+              ValueFrom: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/my-springboot-app/spring.datasource.password"
           LogConfiguration:
             LogDriver: awslogs
             Options:
               awslogs-group: /ecs/my-springboot-app
-              awslogs-region: us-east-1
+              awslogs-region: eu-central-1
               awslogs-stream-prefix: ecs
 
   # ECS Security Group
@@ -213,14 +219,14 @@ Resources:
       TargetTrackingScalingPolicyConfiguration:
         TargetValue: 50.0
         PredefinedMetricSpecification:
-          PredefinedMetricType: ECSServiceAverageCPUUtilization
+          PredefinedMetricType: ECSServiceAverageCPUUtilization   
 
 Outputs:
   ECSClusterName:
     Value: !Ref ECSCluster
     Description: Name of the ECS Cluster
   ECSServiceName:
-    Value: !Ref ECSService
+    Value: !Ref ECSService 
     Description: Name of the ECS Service
   TargetGroup1Arn:
     Value: !Ref TargetGroup1
