@@ -101,7 +101,7 @@ Resources:
           Essential: true
           Environment:
             - Name: aws.s3-bucket
-              Value: !Sub "{{resolve:ssm:/my-springboot-app/aws.s3-bucket}}"
+              Value: !Sub "{{resolve:ssm:/my-springboot-app/aws.s3-bucket:1}}"
           Secrets:
             - Name: aws.access-key
               ValueFrom: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/my-springboot-app/aws.access-key"
