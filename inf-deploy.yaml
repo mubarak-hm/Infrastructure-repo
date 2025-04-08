@@ -1,1 +1,11 @@
-
+template-file-path: ecstemplate.yaml
+parameters:
+  ALBSecurityGroupId: sg-0d4eb2fb03d365e61
+  ECRImageUri: >-
+    867344428625.dkr.ecr.eu-central-1.amazonaws.com/my-springboot-app:awsweek5project-3521f9fe2c38b4943bf57db73a4ed263fc4dcac5
+  VPCId: vpc-03d9dca6ea1666592
+  ALBListenerArn: >-
+    arn:aws:elasticloadbalancing:eu-central-1:867344428625:listener/app/infast-Appli-HAS5NJWEjXVt/cc24420811dd5037/02df52e5f7a31827
+  PrivateSubnet2Id: subnet-0e1a7a40a12cea85d
+  PrivateSubnet1Id: subnet-01299857de12fb459
+tags: {}
